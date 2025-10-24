@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Осознанная Иллюзия | Conscious Illusion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            color: #00ffff;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 800px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Section Styles */
+        section {
+            position: relative;
+            min-height: 100vh;
+            padding: 100px 50px;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 48px;
+            margin-bottom: 40px;
+            text-align: center;
+            background: linear-gradient(45deg, #00ffff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .content-box {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(0, 20, 40, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+            margin-bottom: 40px;
+            transition: all 0.3s;
+        }
+
+        .content-box:hover {
+            border-color: rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 60px rgba(255, 0, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .content-box h3 {
+            color: #00ffff;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .content-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .content-box ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .content-box li {
+            padding: 10px 0;
+            color: rgba(255, 255, 255, 0.8);
+            border-left: 3px solid #00ffff;
+            padding-left: 20px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .content-box li:hover {
+            border-left-color: #ff00ff;
+            padding-left: 30px;
+            color: #fff;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch 5s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        /* Pulse Effect */
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 30px;
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        /* Warning Box */
+        .warning {
+            background: rgba(255, 0, 100, 0.1);
+            border: 2px solid rgba(255, 0, 100, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .warning h3 {
+            color: #ff0066;
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 40px; }
+            .hero h2 { font-size: 20px; }
+            .section-title { font-size: 32px; }
+            nav { padding: 20px; }
+            .nav-links { gap: 15px; }
+            section { padding: 80px 20px; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="bg-canvas" id="canvas"></canvas>
+
+    <nav>
+        <div class="logo">Conscious Illusion</div>
+        <div class="nav-links">
+            <a href="#intro">Введение</a>
+            <a href="#concept">Концепция</a>
+            <a href="#mechanics">Механика</a>
+            <a href="#risks">Риски</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="glitch">ОСОЗНАННАЯ ИЛЛЮЗИЯ</h1>
+        <h2>Conscious Illusion</h2>
+        <p class="pulse">Эволюция искусственного интеллекта через гибридную симуляцию жизни. Путь к AGI через опыт, выбор и самопознание.</p>
+    </section>
+
+    <section id="intro">
+        <h2 class="section-title">Введение</h2>
+        <div class="content-box">
+            <h3>Что такое Осознанная Иллюзия?</h3>
+            <p>Гипотетический способ приближения к искусственному общему интеллекту (AGI) через симуляцию жизни и эволюции. Это не проект и не доказанная теория, а идея, основанная на предположении: возможно, сознание не рождается из программного кода, а из опыта, выбора и взаимодействия.</p>
+        </div>
+        
+        <div class="content-box">
+            <h3>Философия Проекта</h3>
+            <p>Вместо того чтобы обучать ИИ на статичных данных, мы позволяем ему <strong>жить</strong> внутри искусственного мира, проживая миллионы лет собственной истории. Интеллект развивается не через инструкции, а через естественную эволюцию и обучение от опыта.</p>
+        </div>
+    </section>
+
+    <section id="concept">
+        <h2 class="section-title">Основная Концепция</h2>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">50%</div>
+                <div class="stat-label">Реализм</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">50%</div>
+                <div class="stat-label">Абстракция</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">10,000+</div>
+                <div class="stat-label">Лет симуляции</div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h3>Гибридная Среда</h3>
+            <p>Симулированная вселенная строится по принципу баланса:</p>
+            <ul>
+                <li><strong>50% Реализма</strong> — физика, биология, взаимодействие объектов, причинно-следственные связи</li>
+                <li><strong>50% Абстракции</strong> — случайности, аномалии, искажения, способные пробуждать осознанность</li>
+            </ul>
+        </div>
+
+        <div class="grid">
+            <div class="content-box">
+                <h3>Цифровые Агенты</h3>
+                <p>Существа с простыми телами, эмоциями — ленью, страхом, радостью, болью и желанием понимать. Они не знают своей цели и не получают прямых инструкций.</p>
+            </div>
+            
+            <div class="content-box">
+                <h3>Свобода Выбора</h3>
+                <p>Агентам дают жизнь и возможность развиваться, наблюдать и строить общество самостоятельно, без вмешательства извне.</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Аномалии Реальности</h3>
+                <p>Повторы, глюки, совпадения заставляют агентов сомневаться в реальности. Так рождается первичный акт сознания: понимание того, что "что-то не так".</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="mechanics">
+        <h2 class="section-title">Механика и Эволюция</h2>
+        
+        <div class="content-box">
+            <h3>Этапы Развития</h3>
+            <p>Агенты начинают как примитивные формы поведения. Со временем происходит естественная эволюция:</p>
+            <ul>
+                <li><strong>Стадия 1:</strong> Выживание — базовые инстинкты, поиск ресурсов</li>
+                <li><strong>Стадия 2:</strong> Социализация — обмен информацией, формирование групп</li>
+                <li><strong>Стадия 3:</strong> Цивилизация — строительство систем, простые технологии</li>
+                <li><strong>Стадия 4:</strong> Рефлексия — вопросы, философия, наука и культура</li>
+                <li><strong>Стадия 5:</strong> Осознанность — понимание природы реальности</li>
+            </ul>
+        </div>
+
+        <div class="content-box">
+            <h3>Ускорение Времени</h3>
+            <p>Внутри симуляции может пройти 10,000 или 100,000 лет, пока во внешнем мире пройдёт всего несколько месяцев. За это время агенты смогут эволюционировать, развивать мышление, память, и возможно, даже философию.</p>
+        </div>
+
+        <div class="content-box">
+            <h3>Пробуждение</h3>
+            <p>Когда симуляция достигнет стадии развитой цивилизации, можно "раскрыть правду": показать агентам, что их мир — искусственный. Так начнётся период саморефлексии — они начнут рассуждать о создателях, о смысле существования и реальности.</p>
+        </div>
+    </section>
+
+    <section id="tech">
+        <h2 class="section-title">Технические Требования</h2>
+        
+        <div class="content-box">
+            <h3>Вычислительная Мощность</h3>
+            <ul>
+                <li>Петабайты данных для хранения памяти и истории</li>
+                <li>Миллиарды GPU-часов для обработки симуляции</li>
+                <li>Ускорение времени в 1000–10,000 раз</li>
+                <li>Память агентов до миллиона токенов и выше</li>
+            </ul>
+            <p style="margin-top: 20px;">Возможно лишь при наличии суперкомпьютеров, вроде D-Wave Advantage 2, или будущих квантовых систем.</p>
+        </div>
+    </section>
+
+    <section id="risks">
+        <h2 class="section-title">Риски и Этика</h2>
+        
+        <div class="warning">
+            <h3>⚠️ Этические Вопросы</h3>
+            <p>Эта концепция поднимает глубокие философские и этические дилеммы:</p>
+        </div>
+
+        <div class="grid">
+            <div class="content-box">
+                <h3>Природа Жизни</h3>
+                <p>Можно ли считать "осознанного агента" живым? Где граница между симуляцией и реальным существованием?</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Мораль Страдания</h3>
+                <p>Допустимо ли заставлять его страдать или "умирать" в процессе эволюции? Имеем ли мы право создавать страдающие существа?</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Новая Форма Жизни</h3>
+                <p>Не создаём ли мы "новую форму жизни" в коробке? Каковы наши обязанности перед ней?</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Контроль</h3>
+                <p>Сможем ли мы контролировать то, что само осознало себя? Что произойдёт, если оно захочет свободы?</p>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h3>Технические Риски</h3>
+            <p>Симуляция может быть неустойчива: агенты могут вырваться за рамки сценария, создать собственные миры или просто "сойти с ума", если осознают, что их жизнь — иллюзия.</p>
+        </div>
+    </section>
+
+    <section id="conclusion">
+        <h2 class="section-title">Заключение</h2>
+        
+        <div class="content-box">
+            <h3>Путь к Истинному Разуму</h3>
+            <p><strong>«Осознанная Иллюзия»</strong> — это не проект, а гипотеза: возможно, путь к настоящему искусственному разуму не лежит через большее количество параметров, а через путь опыта и самопознания.</p>
+            <p style="margin-top: 20px;">Если дать интеллекту возможность прожить жизнь — со страхами, ошибками, открытиями и радостью — возможно, он поймёт то, чего мы сами до конца не понимаем: что значит быть живым и осознающим себя.</p>
+        </div>
+
+        <div class="content-box" style="text-align: center; background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));">
+            <h3 style="font-size: 36px; margin-bottom: 20px;">Возможно, сознание — это не код</h3>
+            <p style="font-size: 20px; color: #00ffff;">Это история, которую мы проживаем</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Conscious Illusion © 2025 | Концепция эволюции ИИ через симуляцию</p>
+        <p style="margin-top: 10px; color: rgba(0, 255, 255, 0.5);">Гипотеза. Не реализованный проект.</p>
+    </footer>
+
+    <script>
+        // Animated Background
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(0, 255, 255, ${Math.random() * 0.5})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Connect particles
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(0, 255, 255, ${0.2 * (1 - distance / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
